@@ -6,14 +6,23 @@ from mylib.extract import extract
 from mylib.transform_load import load
 from mylib.query import query
 
-# Extract
-print("Extracting data...")
-extract()
+def main():
+  if args.action =="extract":
+    # Extract
+      print("Extracting data...")
+      extract()
+  elif args.action =="transform_data":
+      # Transform and load
+      print("Transforming data...")
+      load()
+  
+  elif args.action == "query":
+      # Query
+      print("Querying data...")
+      query()
+  else:
+    print("unknown action")
 
-# Transform and load
-print("Transforming data...")
-load()
 
-# Query
-print("Querying data...")
-query()
+if __name__ == "__mian__":
+  main()

@@ -2,38 +2,29 @@
 Test goes here
 
 """
-import subprocess
-from mylib.calculator import add
+
+#from mylib.calculator import add
+from main import main
+from main import connect_to_db
+from main import create_table
+from main import insert_data
+from main import read_data
+from unittest.mock import patch
+import os
 
 
-def test_add():
-    result = subprocess.run(["python","main.py","extract"],
-                           capture_output = True), text = True, check = True,)
-    
-    assert add(1, 2) == 3
+def test_main():
+    if os.path.exists("test.db"):
+        os.remove("test.db")
+    conn,cursor = connect_to_db("test.db")
+    create_table(cursor)
 
-def test_query(): #add where condition
-    result = subprocess.run( [
-            "python",
-            "main.py",
-            "general_query",
-            "SELECT * FROM GroceryDB.db ,
-        ],
-        capture_output=True,
-        text=True,
-        check=True,)
-   assert add(1, 2) == 3
+    insert_data(cursor,"Test User",29)
+    data = read_data(cursor)
+    assert data == [(1,"Tesr User",29)]
 
-def test_read_data():
-    """tests read_data"""
-    result = subprocess.run(
-        ["python", "main.py", "read_data"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    assert add(1,2) == 3
-if __name__ =="__main__":
-    test_add()
-    test_read_data()
-    test_query()
+    conn.close()
+
+if __name__ == "__mian__":
+    test_main()
+    print("PASED")
